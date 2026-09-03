@@ -32,9 +32,19 @@ Marketing site for **Altveen Technologies Pvt Ltd**, built with Next.js and Supa
 | `/contact`         | Contact details + form                                 |
 | `/privacy`, `/terms`, `/refund` | Legal pages                               |
 
----
+## Secrets (never on GitHub)
 
-## Setup
+Passwords, API keys, and SMTP credentials **must never** be committed to git.
+
+| File | On GitHub? | Purpose |
+| --- | --- | --- |
+| `.env.local` | **No** (gitignored) | Real keys and passwords for local dev |
+| `.env.example` | Yes | Placeholder names only, no real values |
+| Netlify env vars | No (dashboard only) | Production keys and passwords |
+
+Keep all real values in `.env.local` locally and in **Netlify → Site configuration → Environment variables** for production. If a secret is ever pushed by mistake, rotate it immediately in Supabase and Gmail.
+
+---
 
 ### 1. Install
 

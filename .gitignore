@@ -20,8 +20,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# env files — never commit secrets
+# env files — never commit secrets (passwords, API keys, SMTP creds)
 .env
+.env.*
+!.env.example
 .env*.local
 
 # vercel
