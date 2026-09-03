@@ -1,6 +1,6 @@
 # Altveen Technologies Website
 
-Marketing site for **Altveen Technologies Pvt Ltd**, built with Next.js and Supabase.
+Website for **Altveen Technologies Pvt Ltd**, built with Next.js and Supabase.
 
 ## Tech stack
 
