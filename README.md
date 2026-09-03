@@ -1,4 +1,4 @@
-# Altveen Technologies — Website
+# Altveen Technologies Website
 
 Marketing site for **Altveen Technologies Pvt Ltd**, built with Next.js and Supabase.
 
