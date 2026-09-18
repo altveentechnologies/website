@@ -9,14 +9,14 @@
 #   BACKUP_ENCRYPTION_PASSPHRASE  = a long password you keep in a password
 #                                 manager. Needed later to decrypt a backup.
 #
-# Backups are published as draft GitHub Releases (tag backup-YYYY-MM-DD) so
-# they do not expire and stay visible only to people with write access.
+# Backups are published as draft GitHub Releases numbered backup-1, backup-2, …
+# so they do not expire and stay visible only to people with write access.
 # You can also run this workflow by hand from the Actions tab.
 #
 # Decrypt a downloaded file:
 #   openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
-#     -in altveen-backup-YYYY-MM-DD.zip.enc \
-#     -out altveen-backup-YYYY-MM-DD.zip
+#     -in altveen-backup-1.zip.enc \
+#     -out altveen-backup-1.zip
 # Then unzip and restore:
 #   npm run restore -- path/to/extracted-folder --confirm
 
@@ -83,10 +83,17 @@ jobs:
       - name: Encrypt archive
         env:
           BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.BACKUP_ENCRYPTION_PASSPHRASE }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           DATE=$(date -u +%Y-%m-%d)
-          ARCHIVE="altveen-backup-${DATE}.zip"
+          N=1
+          while gh release view "backup-${N}" >/dev/null 2>&1; do
+            N=$((N + 1))
+          done
+
+          ARCHIVE="altveen-backup-${N}.zip"
           echo "DATE=${DATE}" >> "$GITHUB_ENV"
+          echo "BACKUP_NUMBER=${N}" >> "$GITHUB_ENV"
           echo "ARCHIVE=${ARCHIVE}" >> "$GITHUB_ENV"
           echo "ENCRYPTED=${ARCHIVE}.enc" >> "$GITHUB_ENV"
 
@@ -97,6 +104,7 @@ jobs:
             -out "${ARCHIVE}.enc" \
             -pass env:BACKUP_ENCRYPTION_PASSPHRASE
           rm -f "${ARCHIVE}"
+          echo "Creating backup ${N} (${DATE})"
           ls -lh "${ARCHIVE}.enc"
 
       - name: Upload encrypted artifact
@@ -111,8 +119,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="backup-${DATE}"
-          NOTES="Encrypted monthly backup of Supabase tables and storage (${DATE}).
+          TAG="backup-${BACKUP_NUMBER}"
+          NOTES="Encrypted monthly backup #${BACKUP_NUMBER} of Supabase tables and storage (${DATE}).
 
           Decrypt with the passphrase stored as BACKUP_ENCRYPTION_PASSPHRASE:
 
@@ -127,8 +135,4 @@ jobs:
           npm run restore -- path/to/extracted-folder --confirm
           \`\`\`"
 
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release upload "$TAG" "$ENCRYPTED" --clobber
-          else
-            gh release create "$TAG" "$ENCRYPTED" --draft --title "Data backup ${DATE}" --notes "$NOTES"
-          fi
+          gh release create "$TAG" "$ENCRYPTED" --draft --title "Data backup ${BACKUP_NUMBER}" --notes "$NOTES"
