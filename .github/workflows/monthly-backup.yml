@@ -37,7 +37,7 @@ permissions:
 
 jobs:
   backup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Check required secrets
         env:
@@ -63,9 +63,9 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "22"
           cache: npm
@@ -100,7 +100,7 @@ jobs:
           ls -lh "${ARCHIVE}.enc"
 
       - name: Upload encrypted artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ env.ARCHIVE }}
           path: ${{ env.ENCRYPTED }}
