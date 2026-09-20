@@ -172,3 +172,9 @@ export type CompanyExpense = {
   created_at: string;
   updated_at: string;
 };
+
+export type CashOnHand = {
+  amount: number;
+  notes: string;
+  updated_at: string | null;
+};
