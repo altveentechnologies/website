@@ -24,6 +24,7 @@ const RESTORE_ORDER = [
   "finance_transactions",
   "finance_director_entries",
   "finance_company_expenses",
+  "finance_other_investments",
 ];
 
 const url =

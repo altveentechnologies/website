@@ -4,25 +4,34 @@ import {
   totalsAcrossDirectors,
 } from "@/lib/directors";
 import { formatMoney } from "@/lib/finance";
+import {
+  getOtherInvestments,
+  totalsAcrossOtherInvestments,
+} from "@/lib/other-investments";
 import { DIRECTOR_ENTRY_LABELS, DIRECTOR_LABELS } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { AdminShell } from "../admin-shell";
+import { markOtherInvestmentRepaid } from "../other-investment-actions";
 import { TrashButton } from "../trash-button";
 import { DirectorEntryForm } from "./entry-form";
+import { OtherInvestmentForm } from "./other-investment-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDirectorsPage() {
-  const [entries, sales] = await Promise.all([
+  const [entries, sales, otherInvestments] = await Promise.all([
     getDirectorEntries(),
     getDirectorSaleOptions(),
+    getOtherInvestments(),
   ]);
   const totals = totalsAcrossDirectors(entries);
+  const otherTotals = totalsAcrossOtherInvestments(otherInvestments);
+  const today = new Date().toISOString().slice(0, 10);
 
   return (
     <AdminShell
       title="Directors accounts"
-      description="Arafat and Khalid — money took, money invested, dates, and which service it was for."
+      description="Arafat and Khalid — and money borrowed from friends when you need extra for a job."
     >
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-line bg-ink-850/60 p-5">
@@ -130,6 +139,122 @@ export default async function AdminDirectorsPage() {
           <DirectorEntryForm sales={sales} />
         </aside>
       </div>
+
+      <section className="mt-14 border-t border-line pt-10">
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-cloud">Others investment</h2>
+          <p className="mt-1 text-sm text-mist">
+            When you ask a friend for money, record the date they gave it and the date
+            you paid them back.
+          </p>
+        </div>
+
+        <div className="mb-8 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-line bg-ink-850/60 p-5">
+            <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-mist">
+              Others investment
+            </p>
+            <p className="mt-2 text-2xl font-bold text-cloud">
+              {formatMoney(otherTotals.invested, "INR")}
+            </p>
+            <p className="mt-1 text-xs text-mist">Total friends have given</p>
+          </div>
+          <div className="rounded-2xl border border-line bg-ink-850/60 p-5">
+            <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-mist">
+              Paid back
+            </p>
+            <p className="mt-2 text-2xl font-bold text-brand-400">
+              {formatMoney(otherTotals.paid_back, "INR")}
+            </p>
+            <p className="mt-1 text-xs text-mist">
+              Still owing {formatMoney(otherTotals.outstanding, "INR")}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-[1fr_22rem] lg:items-start">
+          {otherInvestments.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-line bg-ink-850 p-10 text-center">
+              <p className="text-sm text-mist">No other investments yet.</p>
+              <p className="mx-auto mt-3 max-w-md text-xs text-mist">
+                First run{" "}
+                <code className="text-brand-400">supabase/other-investments.sql</code> in
+                Supabase SQL Editor, then add a friend here.
+              </p>
+            </div>
+          ) : (
+            <div className="overflow-hidden rounded-2xl border border-line">
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[48rem] text-left text-sm">
+                  <thead className="bg-ink-850 text-mist">
+                    <tr>
+                      <th className="px-4 py-3 font-medium">Friend</th>
+                      <th className="px-4 py-3 font-medium">Amount</th>
+                      <th className="px-4 py-3 font-medium">They gave us on</th>
+                      <th className="px-4 py-3 font-medium">We paid them back on</th>
+                      <th className="px-4 py-3 font-medium">Notes</th>
+                      <th className="px-4 py-3 text-right font-medium">Remove</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[color:var(--color-line)]">
+                    {otherInvestments.map((row) => (
+                      <tr key={row.id} className="bg-ink-900/60">
+                        <td className="px-4 py-3 font-medium text-cloud">
+                          {row.lender_name}
+                        </td>
+                        <td className="px-4 py-3 font-medium text-cloud">
+                          {formatMoney(row.amount, "INR")}
+                        </td>
+                        <td className="px-4 py-3 text-mist">
+                          {formatDate(row.given_date)}
+                        </td>
+                        <td className="px-4 py-3 text-mist">
+                          {row.repaid_date ? (
+                            formatDate(row.repaid_date)
+                          ) : (
+                            <form
+                              action={markOtherInvestmentRepaid}
+                              className="flex flex-wrap items-center gap-2"
+                            >
+                              <input type="hidden" name="id" value={row.id} />
+                              <input
+                                type="date"
+                                name="repaid_date"
+                                required
+                                defaultValue={today}
+                                aria-label={`Payback date for ${row.lender_name}`}
+                                className="rounded-lg border border-line bg-ink-900 px-3 py-2 text-sm text-cloud focus:border-brand-500 focus:outline-none"
+                              />
+                              <button
+                                type="submit"
+                                className="text-sm text-brand-400 hover:text-brand-500"
+                              >
+                                Mark paid
+                              </button>
+                            </form>
+                          )}
+                        </td>
+                        <td className="max-w-[10rem] px-4 py-3 text-xs text-mist">
+                          {row.notes || "—"}
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          <TrashButton
+                            kind="other_investment"
+                            id={row.id}
+                            label={row.lender_name}
+                          />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          <OtherInvestmentForm />
+        </div>
+      </section>
     </AdminShell>
   );
 }

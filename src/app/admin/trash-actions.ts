@@ -17,6 +17,7 @@ const TABLE: Record<TrashKind, string> = {
   finance_sale: "finance_projects",
   director_entry: "finance_director_entries",
   company_expense: "finance_company_expenses",
+  other_investment: "finance_other_investments",
 };
 
 async function requireAdmin() {

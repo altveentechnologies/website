@@ -27,6 +27,8 @@ function label(kind: TrashKind, row: Record<string, unknown>): string {
     }
     case "company_expense":
       return String(row.description ?? "Company expense");
+    case "other_investment":
+      return String(row.lender_name ?? "Other investment");
   }
 }
 
@@ -50,6 +52,8 @@ function detail(kind: TrashKind, row: Record<string, unknown>): string {
       return `₹${Number(row.amount ?? 0).toLocaleString("en-IN")} · ${String(row.transaction_date ?? "")}`;
     case "company_expense":
       return `₹${Number(row.amount ?? 0).toLocaleString("en-IN")} · ${String(row.expense_date ?? "")}`;
+    case "other_investment":
+      return `₹${Number(row.amount ?? 0).toLocaleString("en-IN")} · given ${String(row.given_date ?? "")}`;
   }
 }
 
@@ -63,6 +67,7 @@ const SOURCES: { kind: TrashKind; table: string; order: string }[] = [
   { kind: "finance_sale", table: "finance_projects", order: "deleted_at" },
   { kind: "director_entry", table: "finance_director_entries", order: "deleted_at" },
   { kind: "company_expense", table: "finance_company_expenses", order: "deleted_at" },
+  { kind: "other_investment", table: "finance_other_investments", order: "deleted_at" },
 ];
 
 export async function getTrashItems(): Promise<TrashItem[]> {
@@ -117,4 +122,5 @@ export const TRASH_KIND_LABEL: Record<TrashKind, string> = {
   finance_sale: "Client sale",
   director_entry: "Director record",
   company_expense: "Company expense",
+  other_investment: "Other investment",
 };

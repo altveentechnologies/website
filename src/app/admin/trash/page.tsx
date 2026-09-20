@@ -36,8 +36,8 @@ export default async function AdminTrashPage() {
           <h2 className="text-lg font-semibold text-cloud">Trash is empty</h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-mist">
             When you trash a post, client, review, form submission, finance sale,
-            director record, or company expense, it lands here until you restore
-            it or delete it for good.
+            director record, company expense, or other investment, it lands here
+            until you restore it or delete it for good.
           </p>
         </div>
       ) : (

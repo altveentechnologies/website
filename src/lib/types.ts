@@ -80,7 +80,8 @@ export type TrashKind =
   | "subscriber"
   | "finance_sale"
   | "director_entry"
-  | "company_expense";
+  | "company_expense"
+  | "other_investment";
 
 export type TrashItem = {
   id: string;
@@ -168,6 +169,17 @@ export type CompanyExpense = {
   description: string;
   amount: number;
   expense_date: string;
+  notes: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type OtherInvestment = {
+  id: string;
+  lender_name: string;
+  amount: number;
+  given_date: string;
+  repaid_date: string | null;
   notes: string;
   created_at: string;
   updated_at: string;
