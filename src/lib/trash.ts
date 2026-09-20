@@ -21,7 +21,7 @@ function label(kind: TrashKind, row: Record<string, unknown>): string {
     case "director_entry": {
       const director = String(row.director ?? "");
       const type = String(row.entry_type ?? "");
-      const name = director === "arfat" ? "Arfat" : director === "khalid" ? "Khalid" : director;
+      const name = director === "arfat" ? "Arafat" : director === "khalid" ? "Khalid" : director;
       const typeLabel = type === "invested" ? "invested" : "took";
       return `${name} — ${typeLabel}`;
     }

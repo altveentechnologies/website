@@ -136,7 +136,7 @@ export type DirectorName = "arfat" | "khalid";
 export type DirectorEntryType = "took" | "invested";
 
 export const DIRECTOR_LABELS: Record<DirectorName, string> = {
-  arfat: "Arfat",
+  arfat: "Arafat",
   khalid: "Khalid",
 };
 

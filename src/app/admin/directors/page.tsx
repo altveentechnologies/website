@@ -22,12 +22,12 @@ export default async function AdminDirectorsPage() {
   return (
     <AdminShell
       title="Directors accounts"
-      description="Arfat and Khalid — money took, money invested, dates, and which service it was for."
+      description="Arafat and Khalid — money took, money invested, dates, and which service it was for."
     >
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-2xl border border-line bg-ink-850/60 p-5">
           <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-mist">
-            Arfat took
+            Arafat took
           </p>
           <p className="mt-2 text-2xl font-bold text-cloud">
             {formatMoney(totals.arfat_took, "INR")}
@@ -35,7 +35,7 @@ export default async function AdminDirectorsPage() {
         </div>
         <div className="rounded-2xl border border-line bg-ink-850/60 p-5">
           <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-mist">
-            Arfat invested
+            Arafat invested
           </p>
           <p className="mt-2 text-2xl font-bold text-brand-400">
             {formatMoney(totals.arfat_invested, "INR")}
@@ -66,7 +66,7 @@ export default async function AdminDirectorsPage() {
           {entries.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-line bg-ink-850 p-10 text-center">
               <p className="text-sm text-mist">
-                No director records yet. Add when Arfat or Khalid takes money or invests
+                No director records yet. Add when Arafat or Khalid takes money or invests
                 for a service.
               </p>
               <p className="mx-auto mt-3 max-w-md text-xs text-mist">

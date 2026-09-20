@@ -1,4 +1,4 @@
--- Money took by Arfat / Khalid — run in Supabase → SQL Editor (safe to re-run)
+-- Money took by Arafat / Khalid — run in Supabase → SQL Editor (safe to re-run)
 
 alter table public.finance_projects
   add column if not exists arfat_took numeric(14, 2) not null default 0 check (arfat_took >= 0);

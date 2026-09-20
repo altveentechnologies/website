@@ -54,7 +54,7 @@ export async function saveDirectorEntry(
   const notes = String(formData.get("notes") ?? "").trim();
 
   const errors: Record<string, string> = {};
-  if (!director) errors.director = "Pick Arfat or Khalid.";
+  if (!director) errors.director = "Pick Arafat or Khalid.";
   if (amount <= 0) errors.amount = "Enter a valid amount.";
   if (!transaction_date) errors.transaction_date = "Pick a date.";
   if (entry_type === "invested" && !project_id) {

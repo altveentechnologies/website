@@ -303,7 +303,7 @@ export const TEAM_MEMBERS: TeamMember[] = [
     image: "/images/team/khalid-jan.jpeg",
   },
   {
-    name: "Sheikh Arfat",
+    name: "Sheikh Arafat",
     role: "Leadership & Direction",
     department: "Leadership",
     bio: "Guides company strategy, client partnerships, and the direction behind every Altveen project.",
@@ -352,14 +352,14 @@ export const TEAM_MEMBERS: TeamMember[] = [
     image: "/images/team/ummar-farooq.jpeg",
   },
   {
-    name: "Sheikh Arfat",
+    name: "Sheikh Arafat",
     role: "Design & Branding",
     department: "Design",
     bio: "Shapes brand direction, visual identity, and design standards across client projects and Altveen itself.",
     image: TEAM_PHOTO_PLACEHOLDER,
   },
   {
-    name: "Sheikh Arfat",
+    name: "Sheikh Arafat",
     role: "Digital Marketing",
     department: "Marketing",
     bio: "Leads growth strategy, campaigns, and marketing direction for client brands and Altveen itself.",

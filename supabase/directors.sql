@@ -1,4 +1,4 @@
--- Director accounts (Arfat / Khalid) — money took & invested with dates.
+-- Director accounts (Arafat / Khalid) — money took & invested with dates.
 -- Run once in Supabase → SQL Editor. Safe to re-run.
 
 create table if not exists public.finance_director_entries (
