@@ -40,7 +40,6 @@ const KNOWN_TABLES = [
   "finance_transactions",
   "finance_director_entries",
   "finance_company_expenses",
-  "finance_cash_on_hand",
 ];
 
 const supabase = createClient(url, serviceKey, {

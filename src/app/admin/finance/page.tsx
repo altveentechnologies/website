@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import { getCashOnHand } from "@/lib/cash-on-hand";
 import { getCompanyExpenses, totalCompanyExpenses } from "@/lib/company-expenses";
 import { formatMoney, getFinanceSales, totalsAcrossSales } from "@/lib/finance";
 import { FINANCE_SALE_TYPE_LABELS } from "@/lib/types";
@@ -8,16 +7,14 @@ import { formatDate } from "@/lib/utils";
 import { buttonClass } from "@/components/ui";
 import { AdminShell } from "../admin-shell";
 import { TrashButton } from "../trash-button";
-import { CashOnHandForm } from "./cash-on-hand-form";
 import { CompanyExpenseForm } from "./company-expense-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminFinancePage() {
-  const [sales, companyExpenses, cash] = await Promise.all([
+  const [sales, companyExpenses] = await Promise.all([
     getFinanceSales(),
     getCompanyExpenses(),
-    getCashOnHand(),
   ]);
   const totals = totalsAcrossSales(sales);
   const extraExpensesTotal = totalCompanyExpenses(companyExpenses);
@@ -83,43 +80,7 @@ export default async function AdminFinancePage() {
             {formatMoney(extraExpensesTotal, "INR")}
           </p>
         </div>
-        <div className="rounded-2xl border border-brand-500/30 bg-ink-850/60 p-5">
-          <p className="font-mono text-[0.65rem] uppercase tracking-[0.14em] text-mist">
-            Money in hand
-          </p>
-          <p className="mt-2 text-2xl font-bold text-cloud">
-            {formatMoney(cash.amount, "INR")}
-          </p>
-        </div>
       </div>
-
-      <section className="mb-10 rounded-2xl border border-line bg-ink-850/40 p-6 sm:p-8">
-        <div className="grid gap-8 lg:grid-cols-[1fr_22rem] lg:items-start">
-          <div>
-            <h2 className="text-lg font-semibold text-cloud">Money in hand</h2>
-            <p className="mt-1 text-sm text-mist">
-              Enter this yourself whenever you count cash and bank. It is not calculated
-              from sales or expenses.
-            </p>
-            <p className="mt-5 text-3xl font-bold text-cloud">
-              {formatMoney(cash.amount, "INR")}
-            </p>
-            {cash.updated_at ? (
-              <p className="mt-2 text-xs text-mist">
-                Last updated {formatDate(cash.updated_at)}
-                {cash.notes ? ` · ${cash.notes}` : ""}
-              </p>
-            ) : (
-              <p className="mt-2 text-xs text-mist">
-                Run{" "}
-                <code className="text-brand-400">supabase/cash-on-hand.sql</code> in
-                Supabase SQL Editor once, then save an amount here.
-              </p>
-            )}
-          </div>
-          <CashOnHandForm key={cash.updated_at ?? "new"} cash={cash} />
-        </div>
-      </section>
 
       {sales.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-line bg-ink-850 p-14 text-center">
