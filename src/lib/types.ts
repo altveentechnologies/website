@@ -77,7 +77,10 @@ export type TrashKind =
   | "testimonial"
   | "consultation"
   | "contact"
-  | "subscriber";
+  | "subscriber"
+  | "finance_sale"
+  | "director_entry"
+  | "company_expense";
 
 export type TrashItem = {
   id: string;
@@ -90,8 +93,82 @@ export type TrashItem = {
 export type FormState = {
   status: "idle" | "success" | "error";
   message: string;
-  /** Field-level errors keyed by input name. */
   errors?: Record<string, string>;
 };
 
 export const IDLE_FORM_STATE: FormState = { status: "idle", message: "" };
+
+export type FinanceCurrency = "INR" | "USD";
+
+export type FinanceSaleType = "service" | "equipment";
+
+export type FinancePayment = {
+  amount: number;
+  date: string;
+};
+
+export type FinanceSale = {
+  id: string;
+  client_name: string;
+  sale_type: FinanceSaleType;
+  item_name: string;
+  currency: FinanceCurrency;
+  quoted_amount: number;
+  paid_amount: number;
+  payments: FinancePayment[];
+  costs: FinancePayment[];
+  cost_amount: number;
+  has_cost: boolean;
+  profit: number;
+  pending: number;
+  notes: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export const FINANCE_SALE_TYPE_LABELS: Record<FinanceSaleType, string> = {
+  service: "Service",
+  equipment: "Equipment",
+};
+
+export type DirectorName = "arfat" | "khalid";
+
+export type DirectorEntryType = "took" | "invested";
+
+export const DIRECTOR_LABELS: Record<DirectorName, string> = {
+  arfat: "Arfat",
+  khalid: "Khalid",
+};
+
+export const DIRECTOR_ENTRY_LABELS: Record<DirectorEntryType, string> = {
+  took: "Took money",
+  invested: "Invested money",
+};
+
+export type DirectorSaleOption = {
+  id: string;
+  label: string;
+};
+
+export type DirectorEntry = {
+  id: string;
+  director: DirectorName;
+  entry_type: DirectorEntryType;
+  amount: number;
+  transaction_date: string;
+  project_id: string | null;
+  service_label: string;
+  notes: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CompanyExpense = {
+  id: string;
+  description: string;
+  amount: number;
+  expense_date: string;
+  notes: string;
+  created_at: string;
+  updated_at: string;
+};

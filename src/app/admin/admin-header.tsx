@@ -12,6 +12,8 @@ import { signOut } from "./actions";
 
 const ADMIN_NAV_LINKS = [
   { href: "/admin", label: "Posts" },
+  { href: "/admin/finance", label: "Finance" },
+  { href: "/admin/directors", label: "Directors" },
   { href: "/admin/clients", label: "Clients" },
   { href: "/admin/marquee", label: "Scroller" },
   { href: "/admin/testimonials", label: "Reviews" },

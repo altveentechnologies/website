@@ -1,4 +1,8 @@
-export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+function env(name: string): string {
+  return (process.env[name] ?? "").trim();
+}
+
+export const SUPABASE_URL = env("NEXT_PUBLIC_SUPABASE_URL");
 
 /**
  * Supabase issues this key under two names depending on project age:
@@ -6,9 +10,8 @@ export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
  * to ship to the browser and both work here, so accept either.
  */
 export const SUPABASE_ANON_KEY =
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
-  "";
+  env("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY") ||
+  env("NEXT_PUBLIC_SUPABASE_ANON_KEY");
 
 /**
  * The site is designed to build and render before Supabase is wired up, so

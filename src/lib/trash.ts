@@ -16,6 +16,17 @@ function label(kind: TrashKind, row: Record<string, unknown>): string {
       return String(row.name ?? "Contact message");
     case "subscriber":
       return String(row.email ?? "Subscriber");
+    case "finance_sale":
+      return String(row.client_name ?? "Client sale");
+    case "director_entry": {
+      const director = String(row.director ?? "");
+      const type = String(row.entry_type ?? "");
+      const name = director === "arfat" ? "Arfat" : director === "khalid" ? "Khalid" : director;
+      const typeLabel = type === "invested" ? "invested" : "took";
+      return `${name} — ${typeLabel}`;
+    }
+    case "company_expense":
+      return String(row.description ?? "Company expense");
   }
 }
 
@@ -33,6 +44,12 @@ function detail(kind: TrashKind, row: Record<string, unknown>): string {
       return String(row.email ?? "");
     case "subscriber":
       return row.source_page ? String(row.source_page) : "Newsletter signup";
+    case "finance_sale":
+      return String(row.item_name ?? row.sale_type ?? "");
+    case "director_entry":
+      return `₹${Number(row.amount ?? 0).toLocaleString("en-IN")} · ${String(row.transaction_date ?? "")}`;
+    case "company_expense":
+      return `₹${Number(row.amount ?? 0).toLocaleString("en-IN")} · ${String(row.expense_date ?? "")}`;
   }
 }
 
@@ -43,6 +60,9 @@ const SOURCES: { kind: TrashKind; table: string; order: string }[] = [
   { kind: "consultation", table: "consultation_requests", order: "deleted_at" },
   { kind: "contact", table: "contact_submissions", order: "deleted_at" },
   { kind: "subscriber", table: "newsletter_subscribers", order: "deleted_at" },
+  { kind: "finance_sale", table: "finance_projects", order: "deleted_at" },
+  { kind: "director_entry", table: "finance_director_entries", order: "deleted_at" },
+  { kind: "company_expense", table: "finance_company_expenses", order: "deleted_at" },
 ];
 
 export async function getTrashItems(): Promise<TrashItem[]> {
@@ -94,4 +114,7 @@ export const TRASH_KIND_LABEL: Record<TrashKind, string> = {
   consultation: "Consultation",
   contact: "Contact message",
   subscriber: "Newsletter signup",
+  finance_sale: "Client sale",
+  director_entry: "Director record",
+  company_expense: "Company expense",
 };

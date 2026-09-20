@@ -4,11 +4,12 @@ import { createServerClient, type CookieOptions } from "@supabase/ssr";
 // NOTE: middleware runs in its own bundle and cannot import from "@/lib/…"
 // helpers that pull in Node-only code, so the key is resolved here too.
 // Accept both the legacy `anon` name and the newer `publishable` one.
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const SUPABASE_ANON_KEY =
-  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ??
-  "";
+const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? "").trim();
+const SUPABASE_ANON_KEY = (
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  ""
+).trim();
 
 type PendingCookie = { name: string; value: string; options: CookieOptions };
 

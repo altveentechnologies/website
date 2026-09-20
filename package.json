@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "seed": "node --env-file=.env.local scripts/seed.mjs",
     "setup:testimonials": "node --env-file=.env.local scripts/setup-testimonials.mjs",
+    "setup:finance": "node --env-file=.env.local scripts/setup-finance.mjs",
     "backup": "node --env-file=.env.local scripts/backup-data.mjs",
     "restore": "node --env-file=.env.local scripts/restore-data.mjs"
   },

@@ -14,6 +14,9 @@ const TABLE: Record<TrashKind, string> = {
   consultation: "consultation_requests",
   contact: "contact_submissions",
   subscriber: "newsletter_subscribers",
+  finance_sale: "finance_projects",
+  director_entry: "finance_director_entries",
+  company_expense: "finance_company_expenses",
 };
 
 async function requireAdmin() {
@@ -44,6 +47,8 @@ function revalidateAll() {
   revalidatePath("/admin/testimonials");
   revalidatePath("/admin/submissions");
   revalidatePath("/admin/trash");
+  revalidatePath("/admin/finance");
+  revalidatePath("/admin/directors");
 }
 
 function readKind(formData: FormData): TrashKind | null {
