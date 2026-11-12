@@ -295,6 +295,26 @@ const CLIENTS = [
     region: "local",
     sort_order: 6,
   },
+  {
+    name: "GENE-INDIA Foundation",
+    sector: "India",
+    image_url: "/images/geneindiafoundation.jpg",
+    description:
+      "Website design and development for a volunteer-led mentorship foundation.",
+    url: "https://geneindiafoundation.org",
+    region: "local",
+    sort_order: 7,
+  },
+  {
+    name: "Mukhtar Lab",
+    sector: "University of Kashmir, J&K",
+    image_url: "/images/mukhtarneurolab.jpg",
+    description:
+      "Research lab website for Dr. Tanzila Mukhtar's neurobiology lab.",
+    url: "https://mukhtarneurolab.org",
+    region: "local",
+    sort_order: 8,
+  },
 ].map((client) => ({ ...client, in_marquee: true }));
 
 // `clients` has no natural unique key, so only insert the ones missing by name.
